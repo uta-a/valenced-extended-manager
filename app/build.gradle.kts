@@ -24,9 +24,9 @@ android {
         minSdk = 28
         targetSdk = 34
         versionName = version.toString()
-        // valenced-extended: `1.1.2-ext.3` → 11203（上流の版の算出に ext の番号を足す）
-        versionCode = versionName!!.removePrefix("v").split("-ext.", limit = 2).let { parts ->
-            parts[0].split("-").first().replace(".", "").toInt() * 100 + (parts.getOrNull(1)?.toIntOrNull() ?: 0)
+        // valenced-extended: `1.1.2-ext3` → 11203（上流の版の算出に ext の番号を足す）。旧形式の `1.1.2-ext.1` も読む
+        versionCode = Regex("""^v?([0-9.]+)(?:-ext\.?([0-9]+))?""").find(versionName!!)!!.destructured.let { (base, ext) ->
+            base.replace(".", "").toInt() * 100 + (ext.toIntOrNull() ?: 0)
         }
 
         buildConfigField("String", "MOD_NAME", "\"Valenced Extended\"")

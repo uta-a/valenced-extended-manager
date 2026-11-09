@@ -1,5 +1,5 @@
 # valenced-extended: Manager のリリースを作る。上流の release.yml（semantic-release）の代わり。
-# 版は `<上流の版>-ext.<n>`（例 1.1.2-ext.1）。CI 内で -Pversion に渡すだけで、コミットはしない
+# 版は `<上流の版>-ext<n>`（例 1.1.2-ext2）。valenced-extended と同じく、ラベルにドットを入れない。CI 内で -Pversion に渡すだけで、コミットはしない
 # （上流の版上げと衝突させないため）。アプリはこのリポジトリの最新リリースを見て自身を更新する。
 
 name: "Release: Extended"
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version (e.g. 1.1.2-ext.1), also used as the release tag
+        description: Version (e.g. 1.1.2-ext2), also used as the release tag
         required: true
         type: string
 
@@ -36,8 +36,8 @@ jobs:
     steps:
       - name: Validate inputs
         run: |
-          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-ext\.[1-9][0-9]?$ ]]; then
-            echo "::error::Invalid version: $VERSION (expected e.g. 1.1.2-ext.1)"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-ext[1-9][0-9]?$ ]]; then
+            echo "::error::Invalid version: $VERSION (expected e.g. 1.1.2-ext2)"
             exit 1
           fi
 
