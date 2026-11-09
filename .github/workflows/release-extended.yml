@@ -73,7 +73,13 @@ jobs:
           KEYSTORE_ENTRY_ALIAS: ${{ vars.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
         run: |
-          ./gradlew assembleRelease --no-daemon -Pversion="$VERSION"
+          # Gradle や依存のダウンロードが一時的に失敗することがあるので、数回試す
+          for attempt in 1 2 3; do
+            ./gradlew assembleRelease --no-daemon -Pversion="$VERSION" && break
+            [ "$attempt" = 3 ] && exit 1
+            echo "::warning::Build failed (attempt $attempt), retrying"
+            sleep 30
+          done
           mkdir dist
           mv app/build/outputs/apk/release/*.apk "dist/valenced-extended-manager-$VERSION.apk"
           ls -l dist
