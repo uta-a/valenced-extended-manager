@@ -9,6 +9,7 @@ import app.valenced.manager.domain.manager.InstallManager
 import app.valenced.manager.updatechecker.reciever.UpdateBroadcastReceiver
 import app.valenced.manager.utils.DiscordVersion
 import app.valenced.manager.utils.Intents
+import dev.uta.valencedextended.manager.InstalledRelease
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -24,10 +25,14 @@ class UpdateWorker(
         val currentVersion =
             DiscordVersion.fromVersionCode(installManager.current?.versionCode.toString())
                 ?: return Result.success()
-        val targetVersion = runCatching { bundleManager.load(refresh = true) }.getOrNull()?.discordVersion
+        val bundle = runCatching { bundleManager.load(refresh = true) }.getOrNull()
             ?: return Result.retry()
+        val targetVersion = bundle.discordVersion
 
-        if (targetVersion > currentVersion) {
+        // valenced-extended: Discord の版が同じでも、新しいリリースが出ていれば知らせる
+        if (targetVersion > currentVersion ||
+            (targetVersion == currentVersion && InstalledRelease.isOutdated(installManager.current, bundle))
+        ) {
             context.sendBroadcast(
                 Intent(
                     context,

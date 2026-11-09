@@ -56,6 +56,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.uta.valencedextended.manager.InstalledRelease
 import org.koin.androidx.compose.get
 
 class HomeScreen : Screen {
@@ -71,6 +72,10 @@ class HomeScreen : Screen {
         }
 
         val targetVersion = viewModel.bundleManager.discordVersion
+        // valenced-extended: 同じ Discord の版でもリリースが新しければ更新として扱う
+        val targetRelease = targetVersion?.let { viewModel.bundleManager.bundle?.release }
+        val releaseOutdated = targetVersion != null &&
+            InstalledRelease.isOutdated(viewModel.installManager.current, viewModel.bundleManager.bundle)
 
         // == Dialogs == //
 
@@ -137,7 +142,10 @@ class HomeScreen : Screen {
 
                     AnimatedVisibility(visible = targetVersion != null) {
                         Text(
-                            text = stringResource(R.string.version_target, targetVersion.toString()),
+                            text = stringResource(
+                                R.string.version_target,
+                                targetVersion.toString() + targetRelease?.let { " ($it)" }.orEmpty()
+                            ),
                             style = MaterialTheme.typography.labelLarge,
                             color = LocalContentColor.current.copy(alpha = 0.5f),
                             textAlign = TextAlign.Center
@@ -166,6 +174,7 @@ class HomeScreen : Screen {
                         targetVersion == null && viewModel.bundleManager.problem != null -> R.string.msg_patches_unavailable
                         targetVersion == null -> R.string.msg_loading
                         currentVersion == null -> R.string.action_install
+                        currentVersion == targetVersion && releaseOutdated -> R.string.action_update
                         currentVersion == targetVersion -> R.string.action_reinstall
                         targetVersion > currentVersion -> R.string.action_update
                         else -> if (prefs.allowDowngrade) R.string.msg_downgrade else R.string.msg_downgrade_disallowed

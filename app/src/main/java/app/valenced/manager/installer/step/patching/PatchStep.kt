@@ -23,6 +23,7 @@ import app.valenced.manager.installer.step.download.DownloadModStep
 import app.valenced.manager.installer.step.download.DownloadResourcesStep
 import app.valenced.manager.installer.util.Logger
 import app.valenced.manager.installer.util.Signer
+import dev.uta.valencedextended.manager.InstalledRelease
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.inject
@@ -71,6 +72,7 @@ class PatchStep(
             "Patched in ${metrics.totalDurationMs} ms" +
                 (metrics.peakRssBytes?.let { ", peak memory ${it / 1_048_576u} MB" } ?: "")
         )
+        InstalledRelease.installing(bundle.release) // valenced-extended
     }
 
     private fun selection(module: File) = PatchSelection(

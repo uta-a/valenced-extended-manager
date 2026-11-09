@@ -96,7 +96,7 @@ class HomeViewModel(
 
     private fun checkForUpdate() {
         screenModelScope.launch {
-            release = repo.getLatestRelease("Valenced/valenced-manager").dataOrNull
+            release = repo.getLatestRelease(BuildConfig.MANAGER_REPO).dataOrNull
             release?.let {
                 updateDownloadUrl = it.assets.firstOrNull { asset -> asset.name.endsWith(".apk") }?.browserDownloadUrl
                 showUpdateDialog = it.tagName.removePrefix("v") != BuildConfig.VERSION_NAME

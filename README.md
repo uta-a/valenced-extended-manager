@@ -22,6 +22,14 @@
   </div>
 </p>
 
+> [!NOTE]
+> **valenced-extended-manager** は Valenced Manager の fork です。上流の Valenced ではなく、VoiceCord を同梱した [valenced-extended](https://github.com/uta-a/valenced-extended) のリリースからモジュールとパッチを取得して、Discord（352.17）にインストール・更新します。上流ファイルへの変更は [FORK_CHANGES.md](FORK_CHANGES.md) にまとめています。
+>
+> - ダウンロード: [Releases](https://github.com/uta-a/valenced-extended-manager/releases/latest)
+> - Manager は `dev.uta.valencedextended.manager`、パッチ済みの Discord は `dev.uta.valencedextended.discord` として入るため、公式 Discord・上流の Valenced / Valenced Manager と共存できます
+> - valenced-extended の新しいリリースが出ると、Discord の版が同じでも「Update」と通知で知らせます
+> - **利用上の注意**: クライアント改変は Discord の利用規約上推奨されません。サブアカウントで、同意のある相手との検証にだけ使ってください
+
 ## 🔽 Download
 
 Download the latest version of Valenced Manager from [here](https://github.com/Valenced/valenced-manager/releases/latest).

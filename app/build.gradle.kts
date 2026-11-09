@@ -19,18 +19,24 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "app.valenced.manager"
+        // valenced-extended: 上流の Manager と共存できるよう別の ID にする
+        applicationId = "dev.uta.valencedextended.manager"
         minSdk = 28
         targetSdk = 34
         versionName = version.toString()
-        versionCode = versionName!!.removePrefix("v").split("-").first().replace(".", "").toInt()
+        // valenced-extended: `1.1.2-ext.3` → 11203（上流の版の算出に ext の番号を足す）
+        versionCode = versionName!!.removePrefix("v").split("-ext.", limit = 2).let { parts ->
+            parts[0].split("-").first().replace(".", "").toInt() * 100 + (parts.getOrNull(1)?.toIntOrNull() ?: 0)
+        }
 
-        buildConfigField("String", "MOD_NAME", "\"Valenced\"")
-        buildConfigField("String", "REPO", "\"Valenced/valenced\"")
+        buildConfigField("String", "MOD_NAME", "\"Valenced Extended\"")
+        // valenced-extended: パッチバンドルとモジュールは fork のリリースから、Manager 自身の更新はこのリポジトリから取る
+        buildConfigField("String", "REPO", "\"uta-a/valenced-extended\"")
+        buildConfigField("String", "MANAGER_REPO", "\"uta-a/valenced-extended-manager\"")
         buildConfigField("String", "BUNDLE_PUBLIC_KEY", "\"$patchesPublicKey\"")
-        buildConfigField("String", "ORG_LINK", "\"https://github.com/Valenced\"")
+        buildConfigField("String", "ORG_LINK", "\"https://github.com/uta-a/valenced-extended\"")
         buildConfigField("String", "INVITE_LINK", "\"https://discord.com/invite/dtBTQHYSx4\"")
-        buildConfigField("String", "MODDED_APP_PACKAGE_NAME", "\"app.valenced\"")
+        buildConfigField("String", "MODDED_APP_PACKAGE_NAME", "\"dev.uta.valencedextended.discord\"")
         buildConfigField("int", "MODDED_APP_ICON", "0xFF37EBFF")
         buildConfigField("int", "MODDED_APP_ICON_ALPHA", "0xFFFBB33C")
         buildConfigField("int", "MODDED_APP_ICON_OTHER", "0xFFD3575E")
