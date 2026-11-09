@@ -28,7 +28,7 @@ valenced-extended-manager が上流 [Valenced/valenced-manager](https://github.c
 
 - 上流のワークフローはファイルを変えずに、リポジトリ側で無効にしている: `Release`（semantic-release。版の付け方と署名が fork と合わないため）、`Open a PR to main`（`dev` ブランチを使わないため）。`Build pull request` は有効
 - `Release: Extended` を Actions から手動で実行してリリースする。版は `<上流の版>-ext.<n>`（例 `1.1.2-ext.1`）。シークレットは `KEYSTORE`（base64）・`KEYSTORE_PASSWORD`・`KEYSTORE_ENTRY_PASSWORD`、変数は `KEYSTORE_ENTRY_ALIAS`。鍵の原本はリポジトリの外に保管している。署名鍵を変えると既存のインストールを更新できなくなる
-- `Upstream: Sync` が PR を作れるよう、Settings > Actions > General の「Allow GitHub Actions to create and approve pull requests」をオンにしている。PR を作れない場合は比較画面へのリンク付きの Issue を立てる
+- `Upstream: Sync` が PR を作れるよう、Settings > Actions > General の「Allow GitHub Actions to create and approve pull requests」をオンにしている。PR を作れない場合は比較画面へのリンク付きの Issue を立てる。シークレット `SYNC_TOKEN` があれば、ブランチの push と PR の作成にそれを使う。上流が `.github/workflows/` を変えると `GITHUB_TOKEN` では push できないため、fine-grained PAT（Contents・Workflows・Pull requests の Read and write）を登録しておく（valenced-extended と同じ PAT でよい）
 
 ## リリースの流れ
 
