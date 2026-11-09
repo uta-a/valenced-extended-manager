@@ -32,6 +32,6 @@ valenced-extended-manager が上流 [Valenced/valenced-manager](https://github.c
 
 ## リリースの流れ
 
-1. [valenced-extended](https://github.com/uta-a/valenced-extended) で `Release: Extended` を実行する（例 `1.3.0-ext.1` / `10301`）。`app-release.apk`（モジュール）と `valenced.reseam`（パッチバンドル）が公開される
+1. [valenced-extended](https://github.com/uta-a/valenced-extended) の main に push すると、`Release: Extended` が pre-release（例 `1.3.0-ext4`）を出す。`app-release.apk`（モジュール）と `valenced.reseam`（パッチバンドル）が公開されるが、pre-release は Manager に配られない。実機で確かめたら `Release: Promote` で Latest にする
 2. Manager はホーム画面を開いたときと定期チェックで最新リリースを読み、インストール済みのリリースより新しければ「Update」と通知を出す
 3. Manager 自体を変えたときは、このリポジトリで `Release: Extended` を実行する。Manager は起動時に新しい版を見つけると更新ダイアログを出す
